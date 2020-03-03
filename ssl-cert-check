@@ -383,6 +383,7 @@ cleanup() {
 ###  $2 -> email to send mail
 ###  $3 -> Subject
 ###  $4 -> Message
+###  $5 -> SMTP Relay
 #####################################################
 send_mail() {
 
@@ -390,13 +391,14 @@ send_mail() {
     TO="${2}"
     SUBJECT="${3}"
     MSG="${4}"
+    SMTP="${5}"
 
     case "${MAILMODE}" in
         "mail")
             echo "$MSG" | "${MAIL}" -r "$FROM" -s "$SUBJECT" "$TO"
             ;;
         "mailx")
-            echo "$MSG" | "${MAIL}" -s "$SUBJECT" "$TO"
+            echo "$MSG" | "${MAIL}" -s "$SUBJECT" "$TO" -S "$SMTP"
             ;;
         "sendmail")
             (echo "Subject:$SUBJECT" && echo "TO:$TO" && echo "FROM:$FROM" && echo "$MSG") | "${MAIL}" "$TO"
